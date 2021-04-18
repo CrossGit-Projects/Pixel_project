@@ -115,5 +115,37 @@ public class PatientServiceImpl implements PatientService {
     private boolean isExistParameters(String[] parameters) {
         return nonNull(parameters) && !parameters[0].equals(QueryConstants.ALL);
     }
+    
+    @Transactional
+    public Patient createPatient(Patient patient) {
+        Optional<Patient> patient1 = patientsRepository.findById(patient.getPatientId());
+        try {
+            if (patient1.isPresent()) {
+                log.info("We can not create patient with id: " + patient.getPatientId() +
+                        "Patient already exist");
+                throw new ResourceAlreadyExistException("We can not create patient with id: " + patient.getPatientId() +
+                        "Patient already exist");
+            }
+            patientsRepository.save(patient);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return patient;
+    }
+
+    @Transactional
+    public Patient getPatientForId(Long patientId) {
+        Optional<Patient> patient = patientsRepository.findById(patientId);
+
+            if (patient.isPresent()) {
+                return patient.get();
+            } else {
+                log.info("We can not return patient with id: " + patientId +
+                        "Patient does not exist");
+                throw new ResourceNotFoundException("We can not return patient with id: " + patientId +
+                        "Patient does not exist");
+            }
+    }
 
 }
