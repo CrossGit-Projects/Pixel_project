@@ -32,5 +32,24 @@ public class PatientController {
         List<PatientsResponse> pagedContent = this.patientService.searchPatientsForCitiesAndSpecialization(searchCity, searchSpecialization);
         return ResponseEntity.status(HttpStatus.OK).body(pagedContent);
     }
+    
+        @RequestMapping(value = {"/save"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+        log.info("przesyłany obiekt: " + patient.toString());
+        Patient pagedContent = patientService.createPatient(patient);
+        return ResponseEntity.status(HttpStatus.OK).body(pagedContent);
+    }
+
+    @RequestMapping(value = {"/looking"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findPatient(
+            @RequestParam(value = "patientId") Long patientId
+    ) {
+        try {
+            Patient patient = this.patientService.getPatientForId(patientId);
+            return ResponseEntity.status(HttpStatus.OK).body(patient);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }
