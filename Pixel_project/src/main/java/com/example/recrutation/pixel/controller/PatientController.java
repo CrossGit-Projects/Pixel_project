@@ -33,4 +33,22 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(pagedContent);
     }
 
+    @RequestMapping(value = {"/patients"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PatientsResponse>> searchForCitiesAndSpecialization1(
+            @RequestParam(value = "cities", required = false) String[] searchCity,
+            @RequestParam(value = "specialities", required = false) String[] searchSpecialization
+    ) {
+        List<PatientsResponse> pagedContent = this.patientService.searchPatientsForCitiesAndSpecialization(searchCity, searchSpecialization);
+        return ResponseEntity.status(HttpStatus.OK).body(pagedContent);
+    }
+
+    @RequestMapping(value = {"/patients"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PatientsResponse>> searchForCitiesAndSpecialization2(
+            @RequestParam(value = "cities", required = false) String[] searchCity,
+            @RequestParam(value = "specialities", required = false) String[] searchSpecialization
+    ) {
+        List<PatientsResponse> pagedContent = this.patientService.searchPatientsForCitiesAndSpecialization(searchCity, searchSpecialization);
+        return ResponseEntity.status(HttpStatus.OK).body(pagedContent);
+    }
+
 }
